@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jurnal Ramadhan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5ede0;
+    --parchment: #ede0cb;
+    --warm-white: #faf6f0;
+    --terracotta: #c0622a;
+    --terracotta-light: #d4754a;
+    --gold: #b5882a;
+    --gold-light: #d4a843;
+    --gold-pale: #e8d5a3;
+    --brown-deep: #3d2b1f;
+    --brown-mid: #5c3d2e;
+    --brown-light: #8b6248;
+    --sage: #6b7c5a;
+    --ink: #2c1f14;
+    --border: rgba(181,136,42,0.3);
+    --shadow: rgba(61,43,31,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(192,98,42,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(181,136,42,0.07) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='rgba(181,136,42,0.04)' stroke-width='1'/%3E%3Ccircle cx='30' cy='30' r='3' fill='none' stroke='rgba(181,136,42,0.05)' stroke-width='0.5'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== GEOMETRIC ORNAMENT SVG ===== */
+  .ornament-top {
+    display: block;
+    margin: 0 auto;
+    opacity: 0.35;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 48px 24px 32px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(245,237,224,1) 0%, rgba(245,237,224,0.6) 100%);
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding: 6px 18px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .header-badge::before, .header-badge::after {
+    content: '◈';
+    font-size: 8px;
+    opacity: 0.6;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 500;
+    color: var(--brown-deep);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .header-sub {
+    margin-top: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--brown-light);
+    letter-spacing: 0.05em;
+  }
+
+  .xp-bar-wrap {
+    margin: 20px auto 0;
+    max-width: 320px;
+  }
+
+  .xp-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .xp-track {
+    height: 4px;
+    background: rgba(181,136,42,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .rank-display {
+    margin-top: 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--terracotta);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ===== MAIN LAYOUT ===== */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    main {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 20px 14px 60px;
+    }
+
+    header { padding: 32px 16px 24px; }
+    header h1 { font-size: 2.2rem; }
+    .header-sub { font-size: 0.95rem; }
+    .xp-bar-wrap { max-width: 100%; }
+
+    .card { padding: 20px 16px; }
+    .card.full-width { grid-column: 1; }
+
+    .digit-block { min-width: 52px; }
+    .digit-num { font-size: 2.4rem; }
+    .digit-sep { font-size: 1.8rem; margin-top: 6px; }
+    .digit-label { font-size: 8px; }
+
+    .glass-btn { font-size: 1.1rem; }
+
+    .tasbih-count { font-size: 3rem; }
+    .tasbih-btn { width: 60px; height: 60px; font-size: 1.3rem; }
+
+    .juz-dot { width: 12px; height: 12px; }
+    .juz-num { font-size: 2.8rem; }
+
+    .amal-input-row { flex-wrap: wrap; }
+    .amal-input { min-width: 0; }
+    .amal-save { width: 100%; text-align: center; padding: 10px; }
+
+    .prayer-name { font-size: 0.95rem; }
+
+    .reward-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .reward-icon { font-size: 1.5rem; }
+    .reward-item { padding: 12px 6px; }
+
+    .mission-text { font-size: 0.88rem; }
+    .iftar-city { font-size: 0.8rem; }
+    .countdown-digits { gap: 0; }
+  }
+
+  @media (max-width: 360px) {
+    header h1 { font-size: 1.8rem; }
+    .digit-num { font-size: 2rem; }
+    .digit-block { min-width: 44px; }
+    .reward-grid { grid-template-columns: repeat(2, 1fr); }
+    .glass-btn { font-size: 1rem; }
+    .card { padding: 16px 12px; }
+  }
+
+  /* ===== CARD ===== */
+  .card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 24px;
+    position: relative;
+    box-shadow: 0 2px 20px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.8);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.40s; }
+  .card:nth-child(9) { animation-delay: 0.45s; }
+
+  .card.full-width { grid-column: 1 / -1; }
+
+  /* Corner ornaments */
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .card::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+  .card::after  { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* ===== IFTAR COUNTDOWN ===== */
+  .iftar-card {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: linear-gradient(135deg, var(--brown-deep) 0%, var(--brown-mid) 100%);
+    border-color: rgba(181,136,42,0.4);
+    color: var(--cream);
+  }
+
+  .iftar-card::before, .iftar-card::after { border-color: var(--gold-light); opacity: 0.7; }
+
+  .iftar-card .card-title {
+    color: var(--gold-light);
+    justify-content: center;
+  }
+  .iftar-card .card-title::after { display: none; }
+
+  .iftar-city {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--gold-pale);
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+
+  .ramadan-day {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--terracotta-light);
+    margin-bottom: 20px;
+  }
+
+  .countdown-digits {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    margin: 12px 0;
+  }
+
+  .digit-block {
+    text-align: center;
+    min-width: 72px;
+  }
+
+  .digit-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1;
+    display: block;
+  }
+
+  .digit-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(245,237,224,0.5);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .digit-sep {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: rgba(181,136,42,0.5);
+    padding: 0 4px;
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+
+  /* ===== SHALAT ===== */
+  .prayer-list { list-style: none; }
+
+  .prayer-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(181,136,42,0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .prayer-item:last-child { border-bottom: none; }
+  .prayer-item:hover { padding-left: 4px; }
+
+  .prayer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--brown-mid);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .prayer-arabic {
+    font-size: 0.8rem;
+    color: var(--brown-light);
+    font-style: italic;
+  }
+
+  .prayer-check {
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    background: transparent;
+  }
+
+  .prayer-item.done .prayer-check {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .prayer-item.done .prayer-name {
+    color: var(--sage);
+    text-decoration: line-through;
+    text-decoration-color: rgba(107,124,90,0.4);
+  }
+
+  .prayer-check svg { opacity: 0; transition: opacity 0.2s; }
+  .prayer-item.done .prayer-check svg { opacity: 1; }
+
+  .prayer-xp {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== HYDRATION ===== */
+  .glass-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .glass-btn {
+    aspect-ratio: 1;
+    background: none;
+    border: 1.5px solid rgba(181,136,42,0.25);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(181,136,42,0.15), rgba(181,136,42,0.05));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .glass-btn.filled { border-color: var(--terracotta); }
+  .glass-btn.filled::before { opacity: 1; background: linear-gradient(180deg, rgba(192,98,42,0.2), rgba(192,98,42,0.08)); }
+
+  .hydration-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--terracotta);
+    text-align: center;
+  }
+
+  .hydration-count span { font-size: 1rem; color: var(--brown-light); font-family: 'Cormorant Garamond', serif; }
+
+  /* ===== AURA / REFLECTION ===== */
+  .reflection-wrap { position: relative; }
+
+  textarea.reflection-input {
+    width: 100%;
+    min-height: 100px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    resize: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--brown-mid);
+    line-height: 1.8;
+    outline: none;
+    padding: 8px 4px;
+  }
+
+  textarea.reflection-input::placeholder {
+    color: rgba(92,61,46,0.35);
+  }
+
+  .reflection-lines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 28px, rgba(181,136,42,0.07) 28px, rgba(181,136,42,0.07) 29px
+    );
+    background-position: 0 8px;
+  }
+
+  .save-reflection {
+    margin-top: 12px;
+    width: 100%;
+    padding: 9px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .save-reflection:hover {
+    background: var(--gold);
+    color: var(--warm-white);
+  }
+
+  /* ===== MISI ===== */
+  .mission-list { list-style: none; }
+
+  .mission-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(181,136,42,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mission-item:last-child { border-bottom: none; }
+
+  .mission-box {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 3px;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .mission-item.done .mission-box {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+  }
+
+  .mission-item.done .mission-box::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+  }
+
+  .mission-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--brown-mid);
+  }
+
+  .mission-item.done .mission-text {
+    color: var(--brown-light);
+    text-decoration: line-through;
+    text-decoration-color: rgba(92,61,46,0.3);
+  }
+
+  .mission-xp {
+    margin-left: auto;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: var(--terracotta);
+    flex-shrink: 0;
+  }
+
+  .reset-btn {
+    margin-top: 16px;
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: 1px solid rgba(192,98,42,0.25);
+    color: var(--terracotta-light);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover {
+    background: rgba(192,98,42,0.08);
+  }
+
+  /* ===== TASBIH ===== */
+  .tasbih-wrap {
+    text-align: center;
+  }
+
+  .tasbih-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--brown-deep);
+    line-height: 1;
+    margin: 12px 0;
+    transition: transform 0.1s;
+  }
+
+  .tasbih-count.pulse {
+    transform: scale(1.06);
+  }
+
+  .tasbih-sublabel {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--brown-light);
+    margin-bottom: 20px;
+  }
+
+  .tasbih-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brown-deep), var(--brown-mid));
+    border: 3px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(61,43,31,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    transition: all 0.15s;
+    color: var(--cream);
+  }
+
+  .tasbih-btn:active {
+    transform: scale(0.94);
+    box-shadow: 0 2px 8px rgba(61,43,31,0.3);
+  }
+
+  .tasbih-reset {
+    display: block;
+    margin: 14px auto 0;
+    background: none;
+    border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--brown-light);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .tasbih-reset:hover { color: var(--terracotta); }
+
+  /* ===== TILAWAH ===== */
+  .juz-display {
+    text-align: center;
+    margin: 12px 0 20px;
+  }
+
+  .juz-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    color: var(--brown-deep);
+    line-height: 1;
+  }
+
+  .juz-label {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--brown-light);
+    margin-top: 4px;
+  }
+
+  .juz-progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(181,136,42,0.12);
+    border-radius: 3px;
+    margin: 16px 0;
+    overflow: hidden;
+  }
+
+  .juz-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold-light));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .juz-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .juz-dot {
+    width: 14px;
+    height: 14px;
+    border: 1px solid rgba(181,136,42,0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .juz-dot.filled {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+  }
+
+  .juz-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--brown-deep), var(--brown-mid));
+    border: none;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+
+  .juz-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ===== AMAL ===== */
+  .amal-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .amal-input {
+    flex: 1;
+    padding: 9px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .amal-input:focus { border-color: var(--gold); }
+
+  .amal-save {
+    padding: 9px 16px;
+    background: var(--terracotta);
+    border: none;
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .amal-save:hover { background: var(--terracotta-light); }
+
+  .amal-list { list-style: none; max-height: 120px; overflow-y: auto; }
+
+  .amal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(181,136,42,0.08);
+    font-size: 0.9rem;
+  }
+
+  .amal-amount { font-family: 'Playfair Display', serif; color: var(--terracotta); font-size: 1rem; }
+
+  .amal-total-wrap {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .amal-total-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .amal-total-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--brown-deep);
+  }
+
+  /* ===== REWARD ===== */
+  .reward-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--brown-deep) 0%, #2a1a0e 100%);
+    border-color: rgba(181,136,42,0.5);
+    color: var(--cream);
+    text-align: center;
+  }
+
+  .reward-card .card-title { color: var(--gold-light); justify-content: center; }
+  .reward-card .card-title::after { display: none; }
+
+  .reward-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .reward-item {
+    padding: 16px 8px;
+    border: 1px solid rgba(181,136,42,0.2);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.03);
+    transition: all 0.3s;
+  }
+
+  .reward-item.unlocked { border-color: var(--gold); background: rgba(181,136,42,0.1); }
+
+  .reward-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+
+  .reward-name {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+
+  .reward-req {
+    font-size: 0.75rem;
+    color: rgba(245,237,224,0.4);
+    font-style: italic;
+  }
+
+  .reward-item.unlocked .reward-req { color: var(--terracotta-light); }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--brown-deep);
+    color: var(--gold-light);
+    padding: 12px 24px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    z-index: 999;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ===== DIVIDER ===== */
+  .ornate-divider {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--gold);
+    opacity: 0.4;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+  }
+
+  .ornate-divider::before, .ornate-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <svg class="ornament-top" width="120" height="24" viewBox="0 0 120 24" fill="none">
+    <path d="M60 2 L70 12 L60 22 L50 12 Z" stroke="#b5882a" stroke-width="1" fill="none"/>
+    <circle cx="60" cy="12" r="3" fill="#b5882a" opacity="0.5"/>
+    <path d="M0 12 L40 12" stroke="#b5882a" stroke-width="0.5" opacity="0.4"/>
+    <path d="M80 12 L120 12" stroke="#b5882a" stroke-width="0.5" opacity="0.4"/>
+    <circle cx="10" cy="12" r="1.5" fill="#b5882a" opacity="0.3"/>
+    <circle cx="20" cy="12" r="1.5" fill="#b5882a" opacity="0.3"/>
+    <circle cx="30" cy="12" r="1.5" fill="#b5882a" opacity="0.3"/>
+    <circle cx="90" cy="12" r="1.5" fill="#b5882a" opacity="0.3"/>
+    <circle cx="100" cy="12" r="1.5" fill="#b5882a" opacity="0.3"/>
+    <circle cx="110" cy="12" r="1.5" fill="#b5882a" opacity="0.3"/>
+  </svg>
+
+  <div class="header-badge">✦ 1446 H ✦</div>
+  <h1>Jurnal <em>Ramadhan</em></h1>
+  <p class="header-sub">Perjalanan Spiritual Yang Indah</p>
+
+  <div class="xp-bar-wrap">
+    <div class="xp-label">
+      <span id="xp-total">0 XP</span>
+      <span id="xp-rank">Musafir</span>
+    </div>
+    <div class="xp-track">
+      <div class="xp-fill" id="xp-fill" style="width:0%"></div>
+    </div>
+    <div class="rank-display" id="rank-title">⬡ Musafir ⬡</div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- IFTAR COUNTDOWN -->
+  <div class="card iftar-card">
+    <div class="card-title">Waktu Berbuka Puasa</div>
+    <div class="iftar-city">📍 <span id="city-name">Pasuruan, ID</span></div>
+    <div class="ramadan-day" id="ramadan-day">— Ramadhan 1446 H —</div>
+    <div class="countdown-digits">
+      <div class="digit-block">
+        <span class="digit-num" id="cd-h">00</span>
+        <span class="digit-label">Jam</span>
+      </div>
+      <div class="digit-sep">:</div>
+      <div class="digit-block">
+        <span class="digit-num" id="cd-m">00</span>
+        <span class="digit-label">Menit</span>
+      </div>
+      <div class="digit-sep">:</div>
+      <div class="digit-block">
+        <span class="digit-num" id="cd-s">00</span>
+        <span class="digit-label">Detik</span>
+      </div>
+    </div>
+    <div style="font-size:0.8rem;font-style:italic;color:rgba(245,237,224,0.4);margin-top:8px;" id="iftar-info">Menghitung waktu berbuka...</div>
+  </div>
+
+  <!-- SHALAT WAJIB -->
+  <div class="card">
+    <div class="card-title">Shalat Wajib</div>
+    <ul class="prayer-list" id="prayer-list">
+      <li class="prayer-item" data-prayer="subuh" onclick="togglePrayer(this)">
+        <span class="prayer-name">
+          Subuh <span class="prayer-arabic">الصبح</span>
+        </span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="prayer-xp">+30 XP</span>
+          <div class="prayer-check">
+            <svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </li>
+      <li class="prayer-item" data-prayer="dzuhur" onclick="togglePrayer(this)">
+        <span class="prayer-name">Dzuhur <span class="prayer-arabic">الظهر</span></span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="prayer-xp">+20 XP</span>
+          <div class="prayer-check">
+            <svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </li>
+      <li class="prayer-item" data-prayer="ashar" onclick="togglePrayer(this)">
+        <span class="prayer-name">Ashar <span class="prayer-arabic">العصر</span></span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="prayer-xp">+20 XP</span>
+          <div class="prayer-check">
+            <svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </li>
+      <li class="prayer-item" data-prayer="maghrib" onclick="togglePrayer(this)">
+        <span class="prayer-name">Maghrib <span class="prayer-arabic">المغرب</span></span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="prayer-xp">+25 XP</span>
+          <div class="prayer-check">
+            <svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </li>
+      <li class="prayer-item" data-prayer="isya" onclick="togglePrayer(this)">
+        <span class="prayer-name">Isya <span class="prayer-arabic">العشاء</span></span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="prayer-xp">+20 XP</span>
+          <div class="prayer-check">
+            <svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- HYDRATION -->
+  <div class="card">
+    <div class="card-title">Target Hidrasi</div>
+    <div class="glass-grid" id="glass-grid">
+      <!-- 8 glasses rendered by JS -->
+    </div>
+    <div class="hydration-count">
+      <span id="glass-count">0</span> <span>/ 8 gelas</span>
+    </div>
+  </div>
+
+  <!-- AURA / REFLEKSI -->
+  <div class="card full-width">
+    <div class="card-title">Aura Spiritual</div>
+    <div class="reflection-wrap">
+      <div class="reflection-lines"></div>
+      <textarea class="reflection-input" id="reflection-input" placeholder="Tuliskan refleksi hati hari ini... apa yang kamu rasakan, apa yang kamu syukuri..."></textarea>
+    </div>
+    <button class="save-reflection" onclick="saveReflection()">✦ Simpan Refleksi ✦</button>
+  </div>
+
+  <!-- MISI HARIAN -->
+  <div class="card">
+    <div class="card-title">Misi Harian</div>
+    <ul class="mission-list" id="mission-list">
+      <li class="mission-item" onclick="toggleMission(this)" data-xp="20">
+        <div class="mission-box"></div>
+        <span class="mission-text">Membaca Al-Quran minimal 15 menit</span>
+        <span class="mission-xp">+20</span>
+      </li>
+      <li class="mission-item" onclick="toggleMission(this)" data-xp="15">
+        <div class="mission-box"></div>
+        <span class="mission-text">Shalat Tarawih berjamaah</span>
+        <span class="mission-xp">+15</span>
+      </li>
+      <li class="mission-item" onclick="toggleMission(this)" data-xp="10">
+        <div class="mission-box"></div>
+        <span class="mission-text">Bersedekah hari ini</span>
+        <span class="mission-xp">+10</span>
+      </li>
+      <li class="mission-item" onclick="toggleMission(this)" data-xp="10">
+        <div class="mission-box"></div>
+        <span class="mission-text">Berbagi makanan berbuka</span>
+        <span class="mission-xp">+10</span>
+      </li>
+      <li class="mission-item" onclick="toggleMission(this)" data-xp="5">
+        <div class="mission-box"></div>
+        <span class="mission-text">Berdzikir 100x setelah shalat</span>
+        <span class="mission-xp">+5</span>
+      </li>
+    </ul>
+    <button class="reset-btn" onclick="resetMissions()">⟳ Reset Semua Misi</button>
+  </div>
+
+  <!-- TASBIH DIGITAL -->
+  <div class="card">
+    <div class="card-title">Tasbih Digital</div>
+    <div class="tasbih-wrap">
+      <div class="tasbih-count" id="tasbih-count">0</div>
+      <div class="tasbih-sublabel" id="tasbih-label">Subhanallah</div>
+      <button class="tasbih-btn" onclick="tapTasbih()">📿</button>
+      <button class="tasbih-reset" onclick="resetTasbih()">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- TILAWAH -->
+  <div class="card">
+    <div class="card-title">Progres Tilawah</div>
+    <div class="juz-display">
+      <div class="juz-num" id="juz-count">0</div>
+      <div class="juz-label">Juz telah selesai</div>
+    </div>
+    <div class="juz-dots" id="juz-dots"></div>
+    <div class="juz-progress">
+      <div class="juz-fill" id="juz-fill" style="width:0%"></div>
+    </div>
+    <button class="juz-btn" onclick="addJuz()">✦ Selesaikan 1 Juz (+50 XP)</button>
+  </div>
+
+  <!-- AMAL JARIYAH -->
+  <div class="card">
+    <div class="card-title">Amal Jariyah</div>
+    <div class="amal-input-row">
+      <input class="amal-input" type="text" id="amal-desc" placeholder="Nama amal...">
+      <input class="amal-input" type="number" id="amal-amount" placeholder="Rp" style="max-width:100px">
+      <button class="amal-save" onclick="saveAmal()">Simpan</button>
+    </div>
+    <ul class="amal-list" id="amal-list"></ul>
+    <div class="amal-total-wrap">
+      <div class="amal-total-label">Total Donasi</div>
+      <div class="amal-total-num">Rp <span id="amal-total">0</span></div>
+    </div>
+  </div>
+
+  <!-- REWARD -->
+  <div class="card reward-card">
+    <div class="card-title">✦ Mubarak Reward ✦</div>
+    <div class="reward-grid" id="reward-grid">
+      <div class="reward-item" data-req="0">
+        <span class="reward-icon">🌙</span>
+        <div class="reward-name">Musafir</div>
+        <div class="reward-req">Mulai perjalanan</div>
+      </div>
+      <div class="reward-item" data-req="100">
+        <span class="reward-icon">⭐</span>
+        <div class="reward-name">Murid</div>
+        <div class="reward-req">100 XP</div>
+      </div>
+      <div class="reward-item" data-req="300">
+        <span class="reward-icon">🕌</span>
+        <div class="reward-name">Santri</div>
+        <div class="reward-req">300 XP</div>
+      </div>
+      <div class="reward-item" data-req="600">
+        <span class="reward-icon">📖</span>
+        <div class="reward-name">Hafidz</div>
+        <div class="reward-req">600 XP</div>
+      </div>
+      <div class="reward-item" data-req="1000">
+        <span class="reward-icon">🕋</span>
+        <div class="reward-name">Muttaqin</div>
+        <div class="reward-req">1000 XP</div>
+      </div>
+      <div class="reward-item" data-req="2000">
+        <span class="reward-icon">✨</span>
+        <div class="reward-name">Wali</div>
+        <div class="reward-req">2000 XP</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== STATE =====
+let state = JSON.parse(localStorage.getItem('ramadgana') || '{}');
+state.xp         = state.xp         || 0;
+state.prayers    = state.prayers    || {};
+state.glasses    = state.glasses    || 0;
+state.tasbih     = state.tasbih     || 0;
+state.juz        = state.juz        || 0;
+state.missions   = state.missions   || {};
+state.amal       = state.amal       || [];
+state.reflection = state.reflection || '';
+
+function save() { localStorage.setItem('ramadgana', JSON.stringify(state)); }
+
+// ===== TOAST =====
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== XP =====
+const RANKS = [
+  { name:'Musafir',  min:0,    max:99   },
+  { name:'Murid',    min:100,  max:299  },
+  { name:'Santri',   min:300,  max:599  },
+  { name:'Hafidz',   min:600,  max:999  },
+  { name:'Muttaqin', min:1000, max:1999 },
+  { name:'Wali',     min:2000, max:9999 },
+];
+
+function addXP(n, msg) {
+  state.xp += n;
+  save();
+  updateXP();
+  if (msg) toast(msg + ' ＋' + n + ' XP');
+}
+
+function updateXP() {
+  const rank = RANKS.find(r => state.xp >= r.min && state.xp <= r.max) || RANKS[RANKS.length-1];
+  const pct  = Math.min(100, ((state.xp - rank.min) / (rank.max - rank.min)) * 100);
+  document.getElementById('xp-total').textContent  = state.xp + ' XP';
+  document.getElementById('xp-rank').textContent   = rank.name;
+  document.getElementById('rank-title').textContent = '⬡ ' + rank.name + ' ⬡';
+  document.getElementById('xp-fill').style.width   = pct + '%';
+  updateRewards();
+}
+
+// ===== COUNTDOWN =====
+// Fixed Maghrib time (Pasuruan) ≈ 17:51 WIB
+function getIftarToday() {
+  const now = new Date();
+  const iftar = new Date(now);
+  iftar.setHours(17, 51, 0, 0);
+  return iftar;
+}
+
+function updateCountdown() {
+  const now = new Date();
+  let iftar = getIftarToday();
+  if (now > iftar) {
+    iftar.setDate(iftar.getDate() + 1);
+    document.getElementById('iftar-info').textContent = 'Alhamdulillah — sudah berbuka hari ini!';
+  } else {
+    const diff = Math.floor((iftar - now) / 1000);
+    const hrs  = Math.floor(diff / 3600);
+    const mins = Math.floor((diff % 3600) / 60);
+    const secs = diff % 60;
+    document.getElementById('cd-h').textContent = String(hrs).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(mins).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(secs).padStart(2,'0');
+    document.getElementById('iftar-info').textContent = 'Maghrib · 17:51 WIB';
+  }
+
+  // Ramadan day
+  const ramadanStart = new Date('2025-03-01');
+  const dayNum = Math.floor((now - ramadanStart) / 86400000) + 1;
+  const d = Math.min(30, Math.max(1, dayNum));
+  document.getElementById('ramadan-day').textContent = '— ' + d + ' Ramadhan 1446 H —';
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ===== PRAYERS =====
+function togglePrayer(el) {
+  const p = el.dataset.prayer;
+  const xpMap = { subuh:30, dzuhur:20, ashar:20, maghrib:25, isya:20 };
+  if (!el.classList.contains('done')) {
+    el.classList.add('done');
+    state.prayers[p] = true;
+    addXP(xpMap[p], 'Shalat ' + p.charAt(0).toUpperCase() + p.slice(1));
+  } else {
+    el.classList.remove('done');
+    state.prayers[p] = false;
+    state.xp = Math.max(0, state.xp - xpMap[p]);
+    save(); updateXP();
+  }
+  save();
+}
+
+function restorePrayers() {
+  document.querySelectorAll('.prayer-item').forEach(el => {
+    if (state.prayers[el.dataset.prayer]) el.classList.add('done');
+  });
+}
+
+// ===== HYDRATION =====
+function buildGlasses() {
+  const grid = document.getElementById('glass-grid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 8; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'glass-btn' + (i < state.glasses ? ' filled' : '');
+    btn.textContent = i < state.glasses ? '🥛' : '🫗';
+    btn.onclick = () => toggleGlass(i);
+    grid.appendChild(btn);
+  }
+  document.getElementById('glass-count').textContent = state.glasses;
+}
+
+function toggleGlass(i) {
+  const wasAbove = i < state.glasses;
+  if (!wasAbove) {
+    state.glasses = i + 1;
+    if (state.glasses === 8) { addXP(30, 'Target hidrasi tercapai!'); }
+    else addXP(5, 'Minum segelas air');
+  } else {
+    state.glasses = i;
+    state.xp = Math.max(0, state.xp - 5);
+    save(); updateXP();
+  }
+  save();
+  buildGlasses();
+}
+
+// ===== REFLECTION =====
+const reflInput = document.getElementById('reflection-input');
+reflInput.value = state.reflection;
+
+function saveReflection() {
+  state.reflection = reflInput.value;
+  save();
+  toast('Refleksi tersimpan ✦');
+}
+
+// ===== MISSIONS =====
+function toggleMission(el) {
+  const xp = parseInt(el.dataset.xp);
+  const idx = [...el.parentElement.children].indexOf(el);
+  if (!el.classList.contains('done')) {
+    el.classList.add('done');
+    state.missions[idx] = true;
+    addXP(xp, el.querySelector('.mission-text').textContent.slice(0,20));
+  } else {
+    el.classList.remove('done');
+    state.missions[idx] = false;
+    state.xp = Math.max(0, state.xp - xp);
+    save(); updateXP();
+  }
+  save();
+}
+
+function resetMissions() {
+  document.querySelectorAll('.mission-item.done').forEach(el => el.classList.remove('done'));
+  state.missions = {};
+  save();
+  toast('Misi direset');
+}
+
+function restoreMissions() {
+  document.querySelectorAll('.mission-item').forEach((el, idx) => {
+    if (state.missions[idx]) el.classList.add('done');
+  });
+}
+
+// ===== TASBIH =====
+const TASBIH_PHRASES = ['Subhanallah', 'Alhamdulillah', 'Allahu Akbar', 'La ilaha illallah', 'Astaghfirullah'];
+
+function tapTasbih() {
+  state.tasbih++;
+  const el = document.getElementById('tasbih-count');
+  el.textContent = state.tasbih;
+  el.classList.add('pulse');
+  setTimeout(() => el.classList.remove('pulse'), 150);
+  const phrase = TASBIH_PHRASES[Math.floor(state.tasbih / 33) % TASBIH_PHRASES.length];
+  document.getElementById('tasbih-label').textContent = phrase;
+  if (state.tasbih % 33 === 0) { addXP(10, phrase + ' ×33'); }
+  save();
+}
+
+function resetTasbih() {
+  state.tasbih = 0;
+  document.getElementById('tasbih-count').textContent = '0';
+  document.getElementById('tasbih-label').textContent = 'Subhanallah';
+  save();
+}
+
+// ===== JUZ DOTS =====
+function buildJuzDots() {
+  const container = document.getElementById('juz-dots');
+  container.innerHTML = '';
+  for (let i = 0; i < 30; i++) {
+    const d = document.createElement('div');
+    d.className = 'juz-dot' + (i < state.juz ? ' filled' : '');
+    d.title = 'Juz ' + (i+1);
+    container.appendChild(d);
+  }
+  document.getElementById('juz-count').textContent = state.juz;
+  document.getElementById('juz-fill').style.width = (state.juz / 30 * 100) + '%';
+}
+
+function addJuz() {
+  if (state.juz >= 30) { toast('MasyaAllah! Khatam Al-Quran ✨'); return; }
+  state.juz++;
+  save();
+  buildJuzDots();
+  addXP(50, 'Juz ' + state.juz + ' selesai');
+  if (state.juz === 30) toast('🎉 Khatam Al-Quran! MasyaAllah!');
+}
+
+// ===== AMAL =====
+function saveAmal() {
+  const desc   = document.getElementById('amal-desc').value.trim();
+  const amount = parseInt(document.getElementById('amal-amount').value) || 0;
+  if (!desc && !amount) return;
+  state.amal.push({ desc: desc || 'Amal', amount });
+  document.getElementById('amal-desc').value   = '';
+  document.getElementById('amal-amount').value = '';
+  save();
+  renderAmal();
+  addXP(20, 'Amal jariyah');
+}
+
+function renderAmal() {
+  const list = document.getElementById('amal-list');
+  list.innerHTML = '';
+  let total = 0;
+  state.amal.forEach(a => {
+    total += a.amount;
+    const li = document.createElement('li');
+    li.className = 'amal-item';
+    li.innerHTML = `<span>${a.desc}</span><span class="amal-amount">Rp ${a.amount.toLocaleString('id-ID')}</span>`;
+    list.appendChild(li);
+  });
+  document.getElementById('amal-total').textContent = total.toLocaleString('id-ID');
+}
+
+// ===== REWARDS =====
+function updateRewards() {
+  document.querySelectorAll('.reward-item').forEach(item => {
+    const req = parseInt(item.dataset.req);
+    if (state.xp >= req) item.classList.add('unlocked');
+    else item.classList.remove('unlocked');
+  });
+}
+
+// ===== INIT =====
+restorePrayers();
+buildGlasses();
+buildJuzDots();
+restoreMissions();
+renderAmal();
+document.getElementById('tasbih-count').textContent = state.tasbih;
+document.getElementById('tasbih-label').textContent =
+  TASBIH_PHRASES[Math.floor(state.tasbih / 33) % TASBIH_PHRASES.length];
+updateXP();
+</script>
+</body>
+</html>
